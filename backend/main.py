@@ -3298,3 +3298,15 @@ if FRONTEND_DIR.exists():
         StaticFiles(directory=str(FRONTEND_DIR), html=True),
         name="frontend"
     )
+
+# ============================================================
+# SERVE FRONTEND FILES
+# ============================================================
+
+FRONTEND_DIR = PROJECT_ROOT / "frontend"
+
+app.mount(
+    "/",
+    StaticFiles(directory=str(FRONTEND_DIR), html=True),
+    name="frontend"
+)
