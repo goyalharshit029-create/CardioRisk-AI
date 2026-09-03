@@ -1920,21 +1920,16 @@ def predict(
 
     except Exception as error:
 
-        print(
+        import traceback
 
-            "Predict error:",
-
-            error
-
-        )
-
+        print("========== PREDICT ERROR ==========")
+        print(repr(error))
+        traceback.print_exc()
+        print("===================================")
 
         raise HTTPException(
-
-            500,
-
-            f"Prediction failed: {error}"
-
+            status_code=500,
+            detail=f"Prediction failed: {str(error)}"
         )
 
 
