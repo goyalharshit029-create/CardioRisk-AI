@@ -30,13 +30,22 @@ except ImportError:
 import time
 import requests
 
-from database import (
-    init_db,
-    create_patient,
-    get_login,
-    get_assessments,
-    conn
-)
+try:
+    from .database import (
+        init_db,
+        create_patient,
+        get_login,
+        get_assessments,
+        conn
+    )
+except ImportError:
+    from database import (
+        init_db,
+        create_patient,
+        get_login,
+        get_assessments,
+        conn
+    )
 
 
 # ============================================================
@@ -222,7 +231,15 @@ init_db()
 model = None
 model_explainer = None
 
+print(f"Main model path: {MODEL_PATH}")
+print(f"Main model exists: {MODEL_PATH.exists()}")
+print(f"Features path: {FEATURES_PATH}")
+print(f"Features file exists: {FEATURES_PATH.exists()}")
+
 try:
+
+    if not MODEL_PATH.exists():
+        raise FileNotFoundError(f"Missing deployment model file: {MODEL_PATH}")
 
     model = joblib.load(
         MODEL_PATH
@@ -268,73 +285,46 @@ except Exception as error:
     model_explainer = None
 
 # ============================================================
-# LOAD CLINICAL XGBOOST RESEARCH MODEL
+# OPTIONAL RESEARCH MODELS
 # ============================================================
+# The production cardiovascular model above is required for the
+# assessment feature. Research models are optional and must never
+# prevent the API from starting.
 
 clinical_model = None
 clinical_features = []
 clinical_explainer = None
 
 try:
+    if CLINICAL_MODEL_PATH.exists():
+        clinical_bundle = joblib.load(CLINICAL_MODEL_PATH)
+        clinical_model = clinical_bundle.get("model")
+        clinical_features = clinical_bundle.get("features", [])
 
-    clinical_bundle = joblib.load(
-        CLINICAL_MODEL_PATH
-    )
+        if clinical_model is not None and shap is not None:
+            try:
+                clinical_explainer = shap.TreeExplainer(clinical_model)
+            except Exception as error:
+                print("Clinical SHAP explainer unavailable:", error)
 
-    clinical_model = clinical_bundle["model"]
-
-    clinical_features = clinical_bundle["features"]
-
-    print(
-        "Clinical XGBoost model loaded successfully."
-    )
-
-    print(
-        "Clinical features loaded:",
-        len(clinical_features)
-    )
-
-    if shap is not None:
-        clinical_explainer = shap.TreeExplainer(
-            clinical_model
-        )
-
-    print(
-        "SHAP explainer loaded successfully."
-    )
-
-
+        print("Clinical XGBoost model loaded successfully.")
+        print("Clinical features loaded:", len(clinical_features))
+    else:
+        print("Clinical research model not included in this deployment.")
 except Exception as error:
-
-    print(
-        "Clinical model / SHAP load error:",
-        error
-    )
-
+    print("Clinical model load error:", error)
     clinical_model = None
     clinical_features = []
     clinical_explainer = None
 
-    # ============================================================
-    # LOAD ECG CNN RESEARCH MODEL
-    # ============================================================
 
-    ecg_model = None
-
-    print(
-        "ECG CNN model is disabled on Vercel because TensorFlow "
-        "is too large for the serverless deployment."
-    )
-
-
-except Exception as error:
-
-    print(
-        "ECG model load error:",
-        error
-    )
-
-    ecg_model = None
+# ============================================================
+# ECG CNN
+# ============================================================
+# TensorFlow is intentionally excluded from the Vercel deployment to
+# keep the serverless bundle below the function-size limit.
+ecg_model = None
+print("ECG CNN model is disabled on the Vercel serverless deployment.")
 
 # ============================================================
 # LOAD TRAINED FEATURES
@@ -654,6 +644,17 @@ def api_status():
         "message": "CardioRisk AI Backend Running",
         "model_loaded": model is not None,
         "feature_count": len(trained_features)
+    }
+
+
+@app.get("/health")
+def health():
+    return {
+        "status": "ok",
+        "model_loaded": model is not None,
+        "model_file_exists": MODEL_PATH.exists(),
+        "features_loaded": bool(trained_features),
+        "features_file_exists": FEATURES_PATH.exists()
     }
 
 
@@ -3267,31 +3268,11 @@ def assistant_job(
 
 
 # ============================================================
-# RUN SERVER
-# ============================================================
-
-if __name__ == "__main__":
-
-    import uvicorn
-
-
-    uvicorn.run(
-
-        "main:app",
-
-        host="127.0.0.1",
-
-        port=8000,
-
-        reload=True
-
-    )
-
-# ============================================================
 # FRONTEND STATIC FILES
 # ============================================================
-# Registered last so all API routes above keep priority.
+# Register this after every API route so API endpoints keep priority.
 FRONTEND_DIR = PROJECT_ROOT / "frontend"
+
 if FRONTEND_DIR.exists():
     app.mount(
         "/",
@@ -3299,14 +3280,16 @@ if FRONTEND_DIR.exists():
         name="frontend"
     )
 
-# ============================================================
-# SERVE FRONTEND FILES
-# ============================================================
 
-FRONTEND_DIR = PROJECT_ROOT / "frontend"
+# ============================================================
+# RUN SERVER
+# ============================================================
+if __name__ == "__main__":
+    import uvicorn
 
-app.mount(
-    "/",
-    StaticFiles(directory=str(FRONTEND_DIR), html=True),
-    name="frontend"
-)
+    uvicorn.run(
+        "main:app",
+        host="127.0.0.1",
+        port=8000,
+        reload=True
+    )

@@ -1,1 +1,13 @@
-{}
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "main.py": {
+      "includeFiles": [
+        "backend/cardiovascular_model.pkl",
+        "backend/features.pkl",
+        "frontend/**",
+        "research/models/clinical_xgboost.pkl"
+      ]
+    }
+  }
+}
