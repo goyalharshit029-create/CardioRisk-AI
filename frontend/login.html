@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sign In | CardioRisk AI</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+<nav class="nav"><div class="brand">❤️ CardioRisk AI</div><div class="nav-links"><a class="active" href="login.html">Sign In</a><a href="register.html">Register</a></div></nav>
+<div id="toast" class="toast"></div>
+<main class="wrap"><section class="card" style="max-width:520px;margin:50px auto"><h1>Welcome Back</h1><p>Sign in to continue to your cardiovascular assessment.</p>
+<div class="form-group"><label>Email</label><input id="email" type="email" placeholder="you@example.com"></div>
+<div class="form-group"><label>Password</label><input id="password" type="password" placeholder="Password" onkeydown="if(event.key==='Enter') login()"></div>
+<button class="btn" onclick="login()">Sign In</button>
+<p style="margin-top:18px">Don't have an account? <a href="register.html">Register here</a></p></section></main>
+<script src="app.js"></script>
+</body></html>

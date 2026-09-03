@@ -1,0 +1,69 @@
+{
+  "selected_model": "XGBoost",
+  "accuracy": 0.7337226277372263,
+  "precision": 0.7529487800937147,
+  "recall": 0.6874170231597581,
+  "f1": 0.7186921653300432,
+  "roc_auc": 0.8022102390498171,
+  "models": [
+    {
+      "model": "Top Model Probability Ensemble",
+      "accuracy": 0.7337226277372263,
+      "precision": 0.7529487800937147,
+      "recall": 0.6874170231597581,
+      "f1": 0.7186921653300432,
+      "roc_auc": 0.8022102390498171
+    },
+    {
+      "model": "XGBoost",
+      "accuracy": 0.7357664233576642,
+      "precision": 0.7570382424735558,
+      "recall": 0.6862369080985397,
+      "f1": 0.719900959455277,
+      "roc_auc": 0.802194562582769
+    },
+    {
+      "model": "Hist Gradient Boosting",
+      "accuracy": 0.733941605839416,
+      "precision": 0.7503994886545222,
+      "recall": 0.6927275409352411,
+      "f1": 0.7204111375316408,
+      "roc_auc": 0.8018521527348699
+    },
+    {
+      "model": "Gradient Boosting",
+      "accuracy": 0.7347445255474453,
+      "precision": 0.7549862169612453,
+      "recall": 0.6868269656291488,
+      "f1": 0.719295535300479,
+      "roc_auc": 0.8018338759564962
+    },
+    {
+      "model": "Random Forest",
+      "accuracy": 0.7345985401459854,
+      "precision": 0.7545763810140936,
+      "recall": 0.6871219943944534,
+      "f1": 0.7192711550339715,
+      "roc_auc": 0.8000380519328636
+    },
+    {
+      "model": "Extra Trees",
+      "accuracy": 0.7338686131386861,
+      "precision": 0.7547568710359408,
+      "recall": 0.6846142498893643,
+      "f1": 0.7179764851485149,
+      "roc_auc": 0.799708473129374
+    },
+    {
+      "model": "Logistic Regression",
+      "accuracy": 0.7305109489051095,
+      "precision": 0.7476335632921547,
+      "recall": 0.6874170231597581,
+      "f1": 0.7162619120811559,
+      "roc_auc": 0.7979064147527681
+    }
+  ],
+  "dataset_records": 68498,
+  "feature_count": 44,
+  "split": "80/20 stratified train-test split with 5-fold cross-validation tuning"
+}

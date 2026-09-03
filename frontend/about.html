@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <title>About | CardioRisk AI</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+
+<body>
+
+    <!-- =========================
+         NAVBAR
+    ========================== -->
+
+    <nav class="nav">
+
+        <div class="brand">
+            ❤️ <span>CardioRisk AI</span>
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="index.html">Dashboard</a>
+
+            <a href="assessment.html">Assessment</a>
+
+            <a href="results.html">Results</a>
+
+            <a href="recommendations.html">Guidance</a>
+
+            <a href="history.html">History</a>
+
+            <a href="about.html" class="active">About</a>
+
+
+            <button onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+
+        <span id="patientName"></span>
+
+    </nav>
+
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+
+    <main class="about-page">
+
+
+        <!-- =========================
+             ABOUT CARD
+        ========================== -->
+
+        <section class="about-main-card">
+
+
+            <!-- TITLE -->
+
+            <div class="about-title">
+
+                <h1>About CardioRisk AI</h1>
+
+                <div class="title-line"></div>
+
+            </div>
+
+
+
+            <!-- =========================
+                 ABOUT FEATURES
+            ========================== -->
+
+            <div class="about-grid">
+
+
+                <!-- DATA PREPARATION -->
+
+                <div class="about-item">
+
+                    <div class="about-icon blue">
+
+                        <i class="fa-solid fa-database"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>Data Preparation</h2>
+
+                        <p>
+
+                            Patient cardiovascular information is processed
+                            before prediction. Relevant health features such
+                            as age, blood pressure, cholesterol, glucose,
+                            lifestyle information and BMI are used to prepare
+                            data for cardiovascular risk assessment.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- XGBOOST -->
+
+                <div class="about-item">
+
+                    <div class="about-icon green">
+
+                        <i class="fa-solid fa-robot"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>XGBoost Risk Prediction</h2>
+
+                        <p>
+
+                            The XGBoost machine learning model analyzes
+                            patient health information to estimate
+                            cardiovascular risk. The prediction is displayed
+                            as a risk probability together with a Low,
+                            Moderate or High risk category.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ECG CNN -->
+
+                <div class="about-item">
+
+                    <div class="about-icon purple">
+
+                        <i class="fa-solid fa-heart-pulse"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>ECG CNN Analysis</h2>
+
+                        <p>
+
+                            Uploaded ECG signals can be analyzed using a
+                            Convolutional Neural Network trained on ECG data.
+                            The CNN provides an AI-based classification of
+                            the ECG signal as Normal or Abnormal along with
+                            prediction probabilities.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SHAP -->
+
+                <div class="about-item">
+
+                    <div class="about-icon blue">
+
+                        <i class="fa-solid fa-magnifying-glass-chart"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>AI Explainability with SHAP</h2>
+
+                        <p>
+
+                            SHAP explainability is used to help interpret
+                            the XGBoost model's prediction. It identifies
+                            the factors that had the strongest influence on
+                            the cardiovascular risk estimate and indicates
+                            whether each factor increased or decreased the
+                            model's predicted risk.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SECURITY -->
+
+                <div class="about-item">
+
+                    <div class="about-icon orange">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>Security & Authentication</h2>
+
+                        <p>
+
+                            The application uses authentication to protect
+                            patient accounts and private assessment data.
+                            Authorized users can access their predictions,
+                            personalized guidance and assessment history.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- DATABASE -->
+
+                <div class="about-item">
+
+                    <div class="about-icon red">
+
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>Assessment History</h2>
+
+                        <p>
+
+                            Previous cardiovascular assessments are stored
+                            for authenticated users. This allows patients to
+                            review earlier risk predictions and monitor their
+                            cardiovascular assessment results over time.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- MEDICAL DISCLAIMER -->
+
+                <div class="medical-box">
+
+                    <div class="medical-box-icon">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                    </div>
+
+
+                    <p>
+
+                        <strong>Medical Disclaimer:</strong>
+
+                        CardioRisk AI is an educational and decision-support
+                        system. The predictions and AI analysis provided by
+                        this application are not a medical diagnosis and
+                        should not replace advice from a qualified healthcare
+                        professional.
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             MODEL PERFORMANCE
+        ========================== -->
+
+        <section class="metrics-main-card">
+
+
+            <div class="metrics-title">
+
+                <div class="metrics-heading">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+
+                    <div>
+
+                        <h1>Model Performance Metrics</h1>
+
+                        <div class="title-line"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================
+                 XGBOOST SECTION
+            ========================== -->
+
+            <div class="model-metrics-heading">
+
+                <div>
+
+                    <h2>
+                        🤖 Cardiovascular Risk Prediction
+                    </h2>
+
+                    <p>
+                        XGBoost Machine Learning Model
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="metrics-grid">
+
+
+                <!-- MODEL -->
+
+                <div class="metric-card model-card">
+
+                    <div class="metric-icon robot">
+
+                        <i class="fa-solid fa-robot"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Selected Model</span>
+
+                        <strong>
+                            XGBoost
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ACCURACY -->
+
+                <div class="metric-card">
+
+                    <div class="metric-icon target">
+
+                        <i class="fa-solid fa-bullseye"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Accuracy</span>
+
+                        <strong>
+                            73.37%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- PRECISION -->
+
+                <div class="metric-card">
+
+                    <div class="metric-icon check">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Precision</span>
+
+                        <strong>
+                            75.29%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- RECALL -->
+
+                <div class="metric-card">
+
+                    <div class="metric-icon recall">
+
+                        <i class="fa-solid fa-rotate"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Recall</span>
+
+                        <strong>
+                            68.74%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- F1 -->
+
+                <div class="metric-card">
+
+                    <div class="metric-icon trophy">
+
+                        <i class="fa-solid fa-trophy"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>F1 Score</span>
+
+                        <strong>
+                            71.87%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ROC AUC -->
+
+                <div class="metric-card">
+
+                    <div class="metric-icon chart">
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>ROC-AUC</span>
+
+                        <strong>
+                            80.22%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =========================
+                 ECG CNN SECTION
+            ========================== -->
+
+            <div class="model-metrics-heading ecg-metrics-heading">
+
+                <div>
+
+                    <h2>
+                        🫀 ECG Signal Analysis
+                    </h2>
+
+                    <p>
+                        Convolutional Neural Network (CNN)
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="metrics-grid ecg-metrics-grid">
+
+
+                <!-- ECG MODEL -->
+
+                <div class="metric-card model-card">
+
+                    <div class="metric-icon robot">
+
+                        <i class="fa-solid fa-brain"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>ECG Model</span>
+
+                        <strong>
+                            CNN
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CNN ACCURACY -->
+
+                <div class="metric-card">
+
+                    <div class="metric-icon target">
+
+                        <i class="fa-solid fa-bullseye"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Test Accuracy</span>
+
+                        <strong>
+                            85.25%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CNN ROC -->
+
+                <div class="metric-card">
+
+                    <div class="metric-icon chart">
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>ROC-AUC</span>
+
+                        <strong>
+                            92.54%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- DATASET -->
+
+                <div class="metric-card">
+
+                    <div class="metric-icon check">
+
+                        <i class="fa-solid fa-database"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>ECG Samples</span>
+
+                        <strong>
+                            2,000
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script src="app.js"></script>
+
+
+    <script>
+
+        nav();
+
+    </script>
+
+
+</body>
+
+</html>

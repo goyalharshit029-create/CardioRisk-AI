@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <title>Risk Assessment Results | CardioRisk AI</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="nav">
+
+        <div class="brand">
+            ❤️ CardioRisk AI
+        </div>
+
+        <div class="nav-links">
+
+            <a href="index.html">Dashboard</a>
+
+            <a href="assessment.html">Assessment</a>
+
+            <a href="results.html" class="active">Results</a>
+
+            <a href="recommendations.html">Guidance</a>
+
+            <a href="history.html">History</a>
+
+            <a href="about.html">About</a>
+
+            <button onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+        <span id="patientName"></span>
+
+    </nav>
+
+
+    <!-- TOAST -->
+    <div id="toast" class="toast"></div>
+
+
+    <!-- RESULTS -->
+
+    <main class="wrap results-page" id="result">
+
+        <div class="card loading-card">
+
+            <div class="loading-icon">
+                ❤️
+            </div>
+
+            <h2>
+                Loading your cardiovascular assessment...
+            </h2>
+
+            <p>
+                Please wait while we prepare your personalized results.
+            </p>
+
+        </div>
+
+    </main>
+
+
+    <script src="app.js"></script>
+
+    <script>
+        nav();
+        renderResult();
+    </script>
+
+</body>
+
+</html>

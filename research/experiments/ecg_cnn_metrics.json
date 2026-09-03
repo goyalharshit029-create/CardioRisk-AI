@@ -1,0 +1,6 @@
+{
+    "test_accuracy": 0.8525000214576721,
+    "roc_auc": 0.9254,
+    "total_samples": 2000,
+    "signal_length": 1000
+}

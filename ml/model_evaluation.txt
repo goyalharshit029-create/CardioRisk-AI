@@ -1,0 +1,12 @@
+CardioRisk AI - Model Evaluation
+====================================
+
+Logistic Regression: Accuracy=0.6950, Precision=0.6731, Recall=0.5570, F1=0.6096, ROC-AUC=0.7611
+Gradient Boosting: Accuracy=0.6900, Precision=0.6673, Recall=0.5482, F1=0.6019, ROC-AUC=0.7513
+SVM: Accuracy=0.6837, Precision=0.6839, Recall=0.4839, F1=0.5668, ROC-AUC=0.7391
+Random Forest: Accuracy=0.6794, Precision=0.6530, Recall=0.5336, F1=0.5873, ROC-AUC=0.7298
+MLP Neural Network: Accuracy=0.6294, Precision=0.5733, Recall=0.5205, F1=0.5456, ROC-AUC=0.6670
+
+Selected model: Logistic Regression
+Dataset records: 8000
+Split: 80/20 stratified

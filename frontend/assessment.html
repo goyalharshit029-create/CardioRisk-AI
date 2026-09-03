@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Risk Assessment</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+    <nav class="nav">
+        <div class="brand">❤️ CardioRisk AI</div>
+        <div class="nav-links"><a href="index.html">Dashboard</a><a href="assessment.html">Assessment</a><a
+                href="results.html">Results</a><a href="recommendations.html">Guidance</a><a
+                href="history.html">History</a><a href="about.html">About</a><button onclick="logout()">Logout</button>
+        </div><span id="patientName"></span>
+    </nav>
+    <div id="toast" class="toast"></div>
+    <div class="wrap">
+        <div class="card">
+            <h1>🩺 Patient Assessment</h1>
+            <p>Values are restricted to clinically plausible prototype ranges. The backend validates them again.</p>
+            <div class="grid">
+                <div><label>Age</label><input id="age" type="number" min="18" max="120">
+                    <div class="help">18–120 years</div>
+                </div>
+                <div><label>Gender</label><select id="gender">
+                        <option value="">Select</option>
+                        <option value="1">Male</option>
+                        <option value="2">Female</option>
+                    </select></div>
+                <div><label>Height (cm)</label><input id="height" type="number" min="100" max="250">
+                    <div class="help">100–250 cm</div>
+                </div>
+                <div><label>Weight (kg)</label><input id="weight" type="number" min="30" max="250">
+                    <div class="help">30–250 kg</div>
+                </div>
+                <div><label>Systolic BP</label><input id="ap_hi" type="number" min="70" max="250">
+                    <div class="help">70–250</div>
+                </div>
+                <div><label>Diastolic BP</label><input id="ap_lo" type="number" min="40" max="150">
+                    <div class="help">40–150</div>
+                </div>
+                <div><label>Cholesterol</label><select id="cholesterol">
+                        <option value="">Select</option>
+                        <option value="1">Normal</option>
+                        <option value="2">Above normal</option>
+                        <option value="3">High</option>
+                    </select></div>
+                <div><label>Glucose</label><select id="gluc">
+                        <option value="">Select</option>
+                        <option value="1">Normal</option>
+                        <option value="2">Above normal</option>
+                        <option value="3">High</option>
+                    </select></div>
+                <div><label>Smoking</label><select id="smoke">
+                        <option value="">Select</option>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select></div>
+                <div><label>Alcohol</label><select id="alco">
+                        <option value="">Select</option>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select></div>
+                <div><label>Physical Activity</label><select id="active">
+                        <option value="">Select</option>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select></div>
+                <div><label>Family History</label><select id="family_history">
+                        <option value="">Select</option>
+                        <option value="0">No known family history</option>
+                        <option value="1">Yes</option>
+                    </select></div>
+                <div>
+                    <label>ECG File (Optional)</label>
+
+                    <input type="file" id="ecg_file" accept=".csv,.txt">
+
+                    <div class="help">
+                        Upload an ECG signal file for CNN-based analysis.
+                    </div>
+
+                    <div id="ecg_result" class="help"></div>
+                </div>
+            </div>
+            <button id="analyzeBtn" class="btn" onclick="analyze()">Analyze Cardiovascular Risk</button>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>

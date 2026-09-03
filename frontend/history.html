@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <title>Assessment History | CardioRisk AI</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="nav">
+
+        <div class="brand">
+            ❤️ CardioRisk AI
+        </div>
+
+        <div class="nav-links">
+
+            <a href="index.html">Dashboard</a>
+
+            <a href="assessment.html">Assessment</a>
+
+            <a href="results.html">Results</a>
+
+            <a href="recommendations.html">Guidance</a>
+
+            <a href="history.html" class="active">
+                History
+            </a>
+
+            <a href="about.html">About</a>
+
+            <button onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+        <span id="patientName"></span>
+
+    </nav>
+
+
+    <div id="toast" class="toast"></div>
+
+
+    <main class="wrap history-page">
+
+        <!-- HERO / HEADER -->
+
+        <section class="history-header">
+
+            <div class="history-header-icon">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+            </div>
+
+            <div>
+
+                <span class="history-label">
+                    YOUR RECORDS
+                </span>
+
+                <h1>
+                    Assessment History
+                </h1>
+
+                <p>View your past cardiovascular risk records.</p>
+
+            </div>
+
+        </section>
+
+
+        <!-- TABLE -->
+
+        <div class="history-table-wrapper">
+
+            <table class="history-table">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date & Time</th>
+                            <th>Risk Assessment</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="history"></tbody>
+                </table>
+
+
+                <tbody id="history">
+
+                    <!-- Loaded by JavaScript -->
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="app.js"></script>
+
+    <script>
+
+        loadHistory();
+
+    </script>
+
+</body>
+
+</html>

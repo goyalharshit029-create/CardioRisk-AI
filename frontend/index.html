@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <title>Dashboard | CardioRisk AI</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+    <nav class="nav">
+
+        <div class="brand">
+            ❤️ CardioRisk AI
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html" class="active">Dashboard</a>
+            <a href="assessment.html">Assessment</a>
+            <a href="results.html">Results</a>
+            <a href="recommendations.html">Guidance</a>
+            <a href="history.html">History</a>
+            <a href="about.html">About</a>
+
+            <button onclick="logout()">Logout</button>
+        </div>
+
+        <span id="patientName"></span>
+
+    </nav>
+
+
+    <div id="toast" class="toast"></div>
+
+
+    <!-- HERO -->
+
+    <section class="dashboard-hero">
+
+        <div class="dashboard-hero-content">
+
+            <div class="hero-badge">
+                🤖 AI-POWERED HEALTHCARE PROTOTYPE
+            </div>
+
+            <h1>
+                Understand Your
+                <span>Cardiovascular Risk</span>
+            </h1>
+
+            <p>
+                CardioRisk AI combines machine learning, validated clinical
+                inputs, personalized risk analysis, dynamic recommendations,
+                and patient assessment history in one healthcare prototype.
+            </p>
+
+
+            <div class="hero-actions">
+
+                <a class="btn" href="assessment.html">
+                    🩺 Start Assessment
+                </a>
+
+                <a class="btn secondary" href="about.html">
+                    📖 How It Works
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-visual">
+
+            <div class="heart-circle">
+                ❤️
+            </div>
+
+            <div class="visual-card">
+
+                <small>AI Cardiovascular Analysis</small>
+
+                <strong>
+                    ML + Clinical Data
+                </strong>
+
+                <span>
+                    Personalized Risk Assessment
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- MODEL METRICS -->
+
+    <main class="wrap">
+
+        <!-- MODEL ANALYTICS -->
+
+        <section class="model-metrics-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>🤖 Model Analytics</h2>
+
+                    <p>
+                        Performance metrics of the machine learning models
+                        used in CardioRisk AI.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stats improved-stats">
+
+
+                <!-- XGBOOST MODEL -->
+
+                <div class="stat metric-card">
+
+                    <div class="metric-icon">🧠</div>
+
+                    <div>
+
+                        <small>Cardiovascular Model</small>
+
+                        <strong>XGBoost</strong>
+
+                        <span class="metric-detail">
+                            70,000 Patient Records
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- XGBOOST ACCURACY -->
+
+                <div class="stat metric-card">
+
+                    <div class="metric-icon">🎯</div>
+
+                    <div>
+
+                        <small>XGBoost Accuracy</small>
+
+                        <strong>73.37%</strong>
+
+                        <span class="metric-detail">
+                            Cardiovascular Risk Prediction
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- XGBOOST AUC -->
+
+                <div class="stat metric-card">
+
+                    <div class="metric-icon">📈</div>
+
+                    <div>
+
+                        <small>XGBoost ROC-AUC</small>
+
+                        <strong>80.22%</strong>
+
+                        <span class="metric-detail">
+                            Model Discrimination Performance
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ECG CNN MODEL -->
+
+                <div class="stat metric-card">
+
+                    <div class="metric-icon">🫀</div>
+
+                    <div>
+
+                        <small>ECG Analysis Model</small>
+
+                        <strong>CNN</strong>
+
+                        <span class="metric-detail">
+                            2,000 ECG Records
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ECG ACCURACY -->
+
+                <div class="stat metric-card">
+
+                    <div class="metric-icon">🎯</div>
+
+                    <div>
+
+                        <small>ECG CNN Accuracy</small>
+
+                        <strong>85.25%</strong>
+
+                        <span class="metric-detail">
+                            Normal vs Abnormal ECG
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ECG AUC -->
+
+                <div class="stat metric-card">
+
+                    <div class="metric-icon">📊</div>
+
+                    <div>
+
+                        <small>ECG CNN ROC-AUC</small>
+
+                        <strong>92.54%</strong>
+
+                        <span class="metric-detail">
+                            ECG Classification Performance
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="model-metrics-note">
+
+                <p>
+
+                    ℹ️ CardioRisk AI uses two separate machine learning models:
+                    an <strong>XGBoost model</strong> for cardiovascular risk
+                    prediction and a <strong>CNN model</strong> for ECG signal
+                    analysis.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROJECT WORKFLOW -->
+
+        <section class="workflow-card">
+
+            <div class="workflow-header">
+
+                <p class="section-small-title">
+                    SYSTEM ARCHITECTURE
+                </p>
+
+                <h2>
+                    🔄 How CardioRisk AI Works
+                </h2>
+
+                <p>
+                    A complete patient-to-prediction workflow with
+                    authentication, validation, machine learning,
+                    recommendations, and stored assessment history.
+                </p>
+
+            </div>
+
+
+            <div class="workflow-grid">
+
+
+                <div class="workflow-step">
+
+                    <div class="step-number">1</div>
+
+                    <div class="workflow-icon">🔐</div>
+
+                    <h3>Secure Access</h3>
+
+                    <p>
+                        Register or login securely. Protected endpoints
+                        use JWT authentication.
+                    </p>
+
+                </div>
+
+
+                <div class="workflow-step">
+
+                    <div class="step-number">2</div>
+
+                    <div class="workflow-icon">🩺</div>
+
+                    <h3>Patient Assessment</h3>
+
+                    <p>
+                        Enter validated clinical and lifestyle
+                        information.
+                    </p>
+
+                </div>
+
+
+                <div class="workflow-step">
+
+                    <div class="step-number">3</div>
+
+                    <div class="workflow-icon">🤖</div>
+
+                    <h3>ML Prediction</h3>
+
+                    <p>
+                        The saved machine learning model calculates
+                        cardiovascular risk.
+                    </p>
+
+                </div>
+
+
+                <div class="workflow-step">
+
+                    <div class="step-number">4</div>
+
+                    <div class="workflow-icon">💡</div>
+
+                    <h3>Personalized Guidance</h3>
+
+                    <p>
+                        Dynamic recommendations are generated from
+                        patient inputs and risk factors.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- SECURITY -->
+
+        <section class="dashboard-security">
+
+            <div class="security-icon">
+                🔒
+            </div>
+
+            <div>
+
+                <h3>
+                    Security & Data Protection
+                </h3>
+
+                <p>
+                    Protected patient endpoints require a JWT bearer token.
+                    Passwords are stored using salted PBKDF2 password hashing,
+                    and patient assessments are stored in the project database.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- QUICK ACTIONS -->
+
+        <section class="quick-actions">
+
+            <a href="assessment.html" class="quick-action">
+
+                <span>🩺</span>
+
+                <div>
+                    <strong>New Assessment</strong>
+                    <small>Check cardiovascular risk</small>
+                </div>
+
+            </a>
+
+
+            <a href="history.html" class="quick-action">
+
+                <span>📋</span>
+
+                <div>
+                    <strong>Assessment History</strong>
+                    <small>View saved results</small>
+                </div>
+
+            </a>
+
+
+            <div class="quick-action" onclick="openAssistant()" style="cursor: pointer;">
+
+                <span>🤖</span>
+
+                <div>
+                    <strong>AI Assistant</strong>
+                    <small>Healthcare education support</small>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <script src="app.js"></script>
+
+    <script>
+        loadMetrics();
+    </script>
+
+</body>
+
+</html>

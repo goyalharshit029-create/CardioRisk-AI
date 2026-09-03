@@ -1,0 +1,10 @@
+fastapi
+pydantic[email]
+pandas
+numpy
+scikit-learn==1.9.0
+joblib
+python-multipart
+requests
+xgboost
+uvicorn

@@ -1,0 +1,1101 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <title>Personalized Guidance | CardioRisk AI</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="nav">
+
+        <div class="brand">
+            ❤️ CardioRisk AI
+        </div>
+
+        <div class="nav-links">
+
+            <a href="index.html">Dashboard</a>
+
+            <a href="assessment.html">Assessment</a>
+
+            <a href="results.html">Results</a>
+
+            <a href="recommendations.html" class="active">
+                Guidance
+            </a>
+
+            <a href="history.html">History</a>
+
+            <a href="about.html">About</a>
+
+            <button onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+        <span id="patientName"></span>
+
+    </nav>
+
+
+    <div id="toast" class="toast"></div>
+
+
+    <main class="wrap guidance-page">
+
+
+        <!-- HERO -->
+
+        <section class="guidance-hero-card">
+
+            <div class="guidance-hero-copy">
+
+                <div class="eyebrow">
+                    PERSONALIZED ACTION PLAN
+                </div>
+
+                <h1>
+                    ✨ Your Health Guidance
+                </h1>
+
+                <p>
+                    Personalized next steps based on your latest
+                    cardiovascular assessment.
+                </p>
+
+            </div>
+
+
+            <div class="guidance-ai-badge">
+
+                ✦
+
+                <span>
+                    Personalized health guidance
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- CONTENT -->
+
+        <div id="guidanceContent" class="guidance-content">
+
+            <section class="guidance-loading card">
+
+                <div class="ai-spinner"></div>
+
+                <h2>
+                    Preparing your personalized guidance
+                </h2>
+
+                <p>
+                    Analyzing your latest cardiovascular assessment...
+                </p>
+
+            </section>
+
+        </div>
+
+
+    </main>
+
+
+    <script src="app.js"></script>
+
+
+    <script>
+
+        /* =========================================
+           LOAD GUIDANCE
+        ========================================= */
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const guidanceContent =
+                document.getElementById("guidanceContent");
+
+
+            const assessmentData =
+                localStorage.getItem("lastAssessment");
+
+
+            const resultData =
+                localStorage.getItem("lastResult");
+
+
+            /* =========================================
+               NO DATA
+            ========================================= */
+
+            if (!assessmentData || !resultData) {
+
+                guidanceContent.innerHTML = `
+
+                    <section class="card guidance-empty">
+
+                        <div class="guidance-empty-icon">
+                            ❤️
+                        </div>
+
+                        <h2>
+                            No assessment found
+                        </h2>
+
+                        <p>
+                            Please complete a cardiovascular assessment
+                            first to receive personalized guidance.
+                        </p>
+
+                        <a href="assessment.html" class="btn">
+                            Start Assessment
+                        </a>
+
+                    </section>
+
+                `;
+
+                return;
+
+            }
+
+
+            let assessment;
+            let result;
+
+
+            try {
+
+                assessment =
+                    JSON.parse(assessmentData);
+
+                result =
+                    JSON.parse(resultData);
+
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+
+                guidanceContent.innerHTML = `
+
+                    <section class="card guidance-error">
+
+                        <h2>
+                            Unable to load assessment
+                        </h2>
+
+                        <p>
+                            Please complete the assessment again.
+                        </p>
+
+                        <a href="assessment.html" class="btn">
+                            Go to Assessment
+                        </a>
+
+                    </section>
+
+                `;
+
+                return;
+
+            }
+
+
+            /*
+            =========================================
+            GENERATE GUIDANCE LOCALLY
+
+            No backend API required.
+            No /guidance endpoint required.
+            =========================================
+            */
+
+            loadGuidance(assessment, result);
+
+        });
+
+
+
+        async function loadGuidance(assessment, result) {
+
+            const guidanceContent =
+                document.getElementById("guidanceContent");
+
+
+            try {
+
+                const token =
+                    localStorage.getItem("token");
+
+
+                const response =
+                    await fetch(
+                        "http://127.0.0.1:8000/guidance",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json",
+
+                                "Authorization":
+                                    `Bearer ${token}`
+
+                            },
+
+                            body: JSON.stringify({
+
+                                assessment: assessment,
+
+                                risk_probability:
+                                    Number(
+                                        result.risk_probability || 0
+                                    ),
+
+                                risk_level:
+                                    result.risk_level || "",
+
+                                bmi:
+                                    Number(
+                                        result.bmi || 0
+                                    ),
+
+                                contributing_factors:
+                                    result.contributing_factors || []
+
+                            })
+
+                        }
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Unable to generate personalized guidance"
+                    );
+
+                }
+
+
+                const guidance =
+                    await response.json();
+
+
+                displayGuidance(guidance);
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Guidance API error:",
+                    error
+                );
+
+
+                // Fallback to local guidance
+
+                const guidance =
+                    generateGuidance(
+                        assessment,
+                        result
+                    );
+
+
+                displayGuidance(guidance);
+
+            }
+
+        }
+
+
+
+        /* =========================================
+           GENERATE PERSONALIZED GUIDANCE
+        ========================================= */
+
+        function generateGuidance(assessment, result) {
+
+
+            const priorityActions = [];
+
+            const lifestyleActions = [];
+
+            const preventionActions = [];
+
+
+            /*
+            -----------------------------------------
+            GET VALUES
+            -----------------------------------------
+            */
+
+            const age =
+                Number(
+                    assessment.age || 0
+                );
+
+
+            const height =
+                Number(
+                    assessment.height || 0
+                );
+
+
+            const weight =
+                Number(
+                    assessment.weight || 0
+                );
+
+
+            const systolic =
+                Number(
+                    assessment.ap_hi ||
+                    assessment.systolic ||
+                    0
+                );
+
+
+            const diastolic =
+                Number(
+                    assessment.ap_lo ||
+                    assessment.diastolic ||
+                    0
+                );
+
+
+            const smoking =
+                String(
+                    assessment.smoke ||
+                    assessment.smoking ||
+                    ""
+                ).toLowerCase();
+
+
+            const alcohol =
+                String(
+                    assessment.alco ||
+                    assessment.alcohol ||
+                    ""
+                ).toLowerCase();
+
+
+            const activity =
+                String(
+                    assessment.active ||
+                    assessment.physical_activity ||
+                    ""
+                ).toLowerCase();
+
+
+            const cholesterol =
+                assessment.cholesterol;
+
+
+            const glucose =
+                assessment.gluc ||
+                assessment.glucose;
+
+
+            /*
+            -----------------------------------------
+            BMI
+            -----------------------------------------
+            */
+
+            let bmi =
+                Number(result.bmi || 0);
+
+
+            if (!bmi && height > 0 && weight > 0) {
+
+                const heightM =
+                    height / 100;
+
+
+                bmi =
+                    weight /
+                    (heightM * heightM);
+
+            }
+
+
+            /*
+            -----------------------------------------
+            RISK LEVEL
+            -----------------------------------------
+            */
+
+            const riskLevel =
+                String(
+                    result.risk_level ||
+                    result.riskLevel ||
+                    ""
+                ).toLowerCase();
+
+
+            const probability =
+                Number(
+                    result.risk_probability ||
+                    result.probability ||
+                    result.risk ||
+                    0
+                );
+
+
+            /*
+            =========================================
+            PRIORITY ACTIONS
+            =========================================
+            */
+
+
+            if (
+                riskLevel.includes("high") ||
+                probability >= 0.65
+            ) {
+
+                priorityActions.push({
+
+                    title:
+                        "Arrange a medical consultation",
+
+                    description:
+                        "Your assessment indicates elevated cardiovascular risk. Consider discussing your blood pressure, cholesterol, glucose and other risk factors with a qualified healthcare professional."
+
+                });
+
+            }
+
+            else if (
+                riskLevel.includes("moderate") ||
+                probability >= 0.40
+            ) {
+
+                priorityActions.push({
+
+                    title:
+                        "Monitor cardiovascular risk factors",
+
+                    description:
+                        "Your assessment suggests that regular monitoring of blood pressure and other cardiovascular risk factors may be beneficial."
+
+                });
+
+            }
+
+            else {
+
+                priorityActions.push({
+
+                    title:
+                        "Maintain preventive cardiovascular care",
+
+                    description:
+                        "Your current assessment does not indicate the highest risk category. Continue healthy habits and regular preventive health monitoring."
+
+                });
+
+            }
+
+
+            /*
+            BLOOD PRESSURE
+            */
+
+            if (systolic >= 140 || diastolic >= 90) {
+
+                priorityActions.push({
+
+                    title:
+                        "Pay attention to blood pressure",
+
+                    description:
+                        `Your recorded blood pressure is ${systolic}/${diastolic} mmHg. Consider regular monitoring and discussing persistently elevated readings with a healthcare professional.`
+
+                });
+
+            }
+
+
+            /*
+            BMI
+            */
+
+            if (bmi >= 25) {
+
+                priorityActions.push({
+
+                    title:
+                        "Work toward a healthy body weight",
+
+                    description:
+                        `Your calculated BMI is approximately ${bmi.toFixed(1)}. Gradual, sustainable improvements in nutrition and physical activity may help support cardiovascular health.`
+
+                });
+
+            }
+
+
+            /*
+            =========================================
+            LIFESTYLE
+            =========================================
+            */
+
+
+            if (
+                smoking === "yes" ||
+                smoking === "1" ||
+                smoking === "true"
+            ) {
+
+                lifestyleActions.push({
+
+                    title:
+                        "Consider stopping smoking",
+
+                    description:
+                        "Smoking is an important cardiovascular risk factor. Seeking professional support and using evidence-based smoking cessation strategies can be helpful."
+
+                });
+
+            }
+
+
+            if (
+                activity === "no" ||
+                activity === "0" ||
+                activity === "false"
+            ) {
+
+                lifestyleActions.push({
+
+                    title:
+                        "Increase regular physical activity",
+
+                    description:
+                        "Gradually increasing regular physical activity, according to your abilities and medical advice, may support heart health."
+
+                });
+
+            }
+
+            else {
+
+                lifestyleActions.push({
+
+                    title:
+                        "Continue regular physical activity",
+
+                    description:
+                        "Maintaining consistent physical activity can support cardiovascular health, weight management and overall wellbeing."
+
+                });
+
+            }
+
+
+            if (
+                alcohol === "yes" ||
+                alcohol === "1" ||
+                alcohol === "true"
+            ) {
+
+                lifestyleActions.push({
+
+                    title:
+                        "Review alcohol consumption",
+
+                    description:
+                        "Avoid excessive alcohol consumption and consider discussing safe limits with a healthcare professional if needed."
+
+                });
+
+            }
+
+
+            /*
+            CHOLESTEROL
+            */
+
+            if (
+                cholesterol == 2 ||
+                cholesterol == 3 ||
+                String(cholesterol).toLowerCase().includes("high") ||
+                String(cholesterol).toLowerCase().includes("above")
+            ) {
+
+                lifestyleActions.push({
+
+                    title:
+                        "Focus on heart-healthy nutrition",
+
+                    description:
+                        "A balanced diet emphasizing vegetables, fruits, whole grains and healthier sources of protein may support healthy cholesterol levels."
+
+                });
+
+            }
+
+
+            /*
+            GLUCOSE
+            */
+
+            if (
+                glucose == 2 ||
+                glucose == 3 ||
+                String(glucose).toLowerCase().includes("high") ||
+                String(glucose).toLowerCase().includes("above")
+            ) {
+
+                lifestyleActions.push({
+
+                    title:
+                        "Pay attention to blood glucose",
+
+                    description:
+                        "Regular monitoring and healthy nutrition can be important when glucose levels are above the normal range."
+
+                });
+
+            }
+
+
+            /*
+            DEFAULT LIFESTYLE
+            */
+
+            lifestyleActions.push({
+
+                title:
+                    "Build sustainable healthy habits",
+
+                description:
+                    "Focus on consistent sleep, balanced nutrition, regular movement and stress management rather than short-term changes."
+
+            });
+
+
+            /*
+            =========================================
+            PREVENTION
+            =========================================
+            */
+
+
+            preventionActions.push({
+
+                title:
+                    "Monitor blood pressure regularly",
+
+                description:
+                    "Keep track of blood pressure readings over time and seek medical advice for consistently abnormal values."
+
+            });
+
+
+            preventionActions.push({
+
+                title:
+                    "Schedule preventive health checks",
+
+                description:
+                    "Regular health checks can help monitor cardiovascular risk factors such as blood pressure, cholesterol and glucose."
+
+            });
+
+
+            if (age >= 40) {
+
+                preventionActions.push({
+
+                    title:
+                        "Continue age-appropriate cardiovascular screening",
+
+                    description:
+                        "As cardiovascular risk can increase with age, regular preventive assessment and monitoring become increasingly important."
+
+                });
+
+            }
+
+
+            /*
+            =========================================
+            MEDICAL FOLLOW UP
+            =========================================
+            */
+
+
+            const followUpRecommended =
+
+                riskLevel.includes("high") ||
+
+                probability >= 0.65 ||
+
+                systolic >= 140 ||
+
+                diastolic >= 90;
+
+
+            const followUpMessage =
+                followUpRecommended
+
+                    ?
+
+                    "Based on the available assessment information, discussing your cardiovascular risk factors with a qualified healthcare professional is recommended."
+
+                    :
+
+                    "Continue preventive care and maintain regular health monitoring. Consult a healthcare professional if you notice concerning symptoms or persistent abnormal readings.";
+
+
+
+            return {
+
+                priority_actions:
+                    priorityActions,
+
+                lifestyle_risk_reduction:
+                    lifestyleActions,
+
+                prevention_monitoring:
+                    preventionActions,
+
+                medical_follow_up: {
+
+                    recommended:
+                        followUpRecommended,
+
+                    message:
+                        followUpMessage
+
+                }
+
+            };
+
+        }
+
+
+
+        /* =========================================
+           DISPLAY GUIDANCE
+        ========================================= */
+
+        function displayGuidance(data) {
+
+
+            const guidanceContent =
+                document.getElementById(
+                    "guidanceContent"
+                );
+
+
+            const priority =
+                data.priority_actions || [];
+
+
+            const lifestyle =
+                data.lifestyle_risk_reduction || [];
+
+
+            const prevention =
+                data.prevention_monitoring || [];
+
+
+            const followUp =
+                data.medical_follow_up || {};
+
+
+
+            guidanceContent.innerHTML = `
+
+
+                <!-- PRIORITY -->
+
+                <section class="guidance-section card">
+
+                    <div class="guidance-section-header">
+
+                        <div class="guidance-section-icon priority">
+                            🎯
+                        </div>
+
+                        <div>
+
+                            <span class="guidance-label">
+                                START HERE
+                            </span>
+
+                            <h2>
+                                Priority Actions
+                            </h2>
+
+                            <p>
+                                The most important next steps based on
+                                your latest assessment.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="guidance-actions">
+
+                        ${createGuidanceCards(priority)}
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- LIFESTYLE -->
+
+                <section class="guidance-section card">
+
+                    <div class="guidance-section-header">
+
+                        <div class="guidance-section-icon lifestyle">
+                            🌱
+                        </div>
+
+                        <div>
+
+                            <span class="guidance-label">
+                                DAILY HEALTH
+                            </span>
+
+                            <h2>
+                                Lifestyle & Risk Reduction
+                            </h2>
+
+                            <p>
+                                Sustainable habits that may support
+                                cardiovascular health.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="guidance-actions">
+
+                        ${createGuidanceCards(lifestyle)}
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- PREVENTION -->
+
+                <section class="guidance-section card">
+
+                    <div class="guidance-section-header">
+
+                        <div class="guidance-section-icon prevention">
+                            🛡️
+                        </div>
+
+                        <div>
+
+                            <span class="guidance-label">
+                                STAY AWARE
+                            </span>
+
+                            <h2>
+                                Prevention & Monitoring
+                            </h2>
+
+                            <p>
+                                Important areas to monitor over time.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="guidance-actions">
+
+                        ${createGuidanceCards(prevention)}
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- FOLLOW UP -->
+
+                <section class="guidance-followup card">
+
+                    <div class="followup-icon">
+
+                        ${followUp.recommended ? "🩺" : "❤️"}
+
+                    </div>
+
+
+                    <div>
+
+                        <span class="guidance-label">
+
+                            PROFESSIONAL SUPPORT
+
+                        </span>
+
+
+                        <h2>
+
+                            ${followUp.recommended
+                    ? "Medical Follow-up Recommended"
+                    : "Continue Preventive Care"
+                }
+
+                        </h2>
+
+
+                        <p>
+
+                            ${escapeHtml(
+                    followUp.message ||
+                    "Continue monitoring your cardiovascular health."
+                )}
+
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- DISCLAIMER -->
+
+                <div class="guidance-disclaimer">
+
+                    <strong>
+                        Educational guidance only.
+                    </strong>
+
+                    CardioRisk AI provides educational,
+                    decision-support information and does not
+                    provide a medical diagnosis.
+
+                </div>
+
+            `;
+
+        }
+
+
+
+        /* =========================================
+           CREATE CARDS
+        ========================================= */
+
+        function createGuidanceCards(items) {
+
+
+            if (!items || items.length === 0) {
+
+                return `
+
+                    <div class="guidance-action-card">
+
+                        <h3>
+                            Maintain healthy habits
+                        </h3>
+
+                        <p>
+                            Continue focusing on healthy lifestyle
+                            habits and preventive monitoring.
+                        </p>
+
+                    </div>
+
+                `;
+
+            }
+
+
+            return items.map(item => `
+
+                <article class="guidance-action-card">
+
+                    <h3>
+
+                        ${escapeHtml(
+                item.title ||
+                "Health Recommendation"
+            )}
+
+                    </h3>
+
+
+                    <p>
+
+                        ${escapeHtml(
+                item.description || ""
+            )}
+
+                    </p>
+
+                </article>
+
+            `).join("");
+
+        }
+
+
+
+        /* =========================================
+           ESCAPE HTML
+        ========================================= */
+
+        function escapeHtml(value) {
+
+            const div =
+                document.createElement("div");
+
+
+            div.textContent =
+                String(value || "");
+
+
+            return div.innerHTML;
+
+        }
+
+
+    </script>
+
+</body>
+
+</html>
